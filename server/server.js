@@ -158,6 +158,7 @@ app.get('/users/:id', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
+  console.log('this is the user we\'re trying to send',req.body)
   db.users.post(req.body)
     .then((resolve) => {
       console.log('sending', resolve);
