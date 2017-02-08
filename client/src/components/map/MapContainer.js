@@ -15,7 +15,7 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const mapPin = require('../../icons/map-pin.png');
+const mapPin = require('../../icons/map-pin-40.png');
 
 //Here is a map stripped down to it's very basic core
 class MapContainer extends Component {
@@ -46,12 +46,14 @@ class MapContainer extends Component {
     this.setCurrentDevicePosition = this.setCurrentDevicePosition.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.getCurrentPosition()
-  //   .then((resolve) => {
-  //     this.moveMapToCurrentPostion();
-  //   });
-  // }
+  componentDidMount() {
+    if (Platform.OS === 'ios') {
+      this.getCurrentPosition()
+      .then(() => {
+        this.moveMapToCurrentPostion();
+      });
+    }
+  }
 
   componentWillReceiveProps(newProps) {
      if (newProps.newLocation) {
@@ -82,6 +84,7 @@ class MapContainer extends Component {
   }
 
   handleAddressProps(address) {
+    console.log('address in handleAddressProps', address)
     let self = this;
     if (!address.latitude || !address.longitude) {
       getLatLong({ address }, (res) => {
@@ -144,6 +147,7 @@ class MapContainer extends Component {
   }
 
   render() {
+    const reference = {};
     return (
       <View>
       <StatusBar
@@ -163,14 +167,17 @@ class MapContainer extends Component {
               //This maps all the spots (passed down from app as props)
               <MapView.Marker
               //The ref is the weird workaround to the showCallout issue
-                //ref={ref => { reference[spot.id] = ref; }}
+                ref={ref => { reference[spot.id] = ref; }}
                 key={spot.id}
                 coordinate={{ latitude: spot.latitude, longitude: spot.longitude }}
                 title={spot.title}
                 description={`Score: ${parseInt(spot.percentage * 100)}%`}
                 image={mapPin}
                 //This adds the mini blurb on the screen
-                //onPress={() => { reference[spot.id].showCallout(); }}
+                onPress={() => { 
+                  console.log('pressed!')
+                  reference[spot.id].showCallout();
+                }}
                 //This changes the scene to the blurb with the spot passed down as props
                 onCalloutPress={() => {
                   if (this.props.getMapSpotState() !== null){

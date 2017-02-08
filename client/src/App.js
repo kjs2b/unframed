@@ -112,7 +112,6 @@ class App extends Component {
   getMapSpotState() {
     return this.viewingSpotInMap;
   }
-
   setSavedListState(newStateData) {
     this.viewingSpotInSavedList = newStateData;
   }
@@ -154,12 +153,16 @@ render() {
                   titleOpacity={0}
                   onPress={() => {
                     if (this.viewingSpotInMap !== null && this.currentView === 'mapSpot') {
+                      // console.log('map option 1');
                       this.backButtonHandler();
-                    } else if (this.viewingSpotInMap !== null && this.currentView !== 'mapSpot') { // refresh with spot in state
+                    } else if (this.viewingSpotInMap !== null && this.currentView !== 'mapSpot') { 
+                      // refresh with spot in state
+                      // console.log('map option 2');
                       // saved spot in state
                       this.setCurrentView('mapSpot');
                       Actions.Map({ type: ActionConst.REFRESH, setMapSpotState: this.setMapSpotState, setCurrentView: this.setCurrentView });
                     } else { // user is going back
+                      // console.log('map option 3');
                       // no map spot in state
                       this.setCurrentView('map');
                       Actions.Map({ type: ActionConst.REFRESH, setMapSpotState: this.setMapSpotState, setCurrentView: this.setCurrentView });

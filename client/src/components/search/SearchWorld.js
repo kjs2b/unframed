@@ -76,6 +76,7 @@ class SearchWorld extends Component {
               <TouchableOpacity 
                 key={idx}
                 onPress={() => {
+                    this.props.setCurrentView('map');
                     Actions.MapContainer({ type: ActionConst.REFRESH, newLocation: image.location });
                 }}
               >
